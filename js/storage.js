@@ -2,7 +2,8 @@ let serverPort, serverIp, serverProtocol, serverPath, origin;
 
 
 function pullStoredData(callback) {
-    chrome.storage.sync.get(['serverIp', 'serverPort', 'serverPath', 'serverProtocol'], function(data) {
+    chrome.storage.sync.get(['serverIp', 'serverPort', 'serverPath', 'serverProtocol', 'packageName'], function(data) {
+        packageName = data.packageName || 'AAA_Downloads';
         serverIp = data.serverIp || '172.0.0.1';
         serverPort = data.serverPort || 8001;
         serverPath = data.serverPath || '/';
@@ -39,5 +40,19 @@ function setOrigin(ip, port, protocol, path, callback) {
         serverPath: serverPath
     }, function () {
         if (callback) callback();
+    });
+}
+
+function setPackageName(packageName) {
+    _packageName = packageName;
+    // _packageName = _packageName.replace(/[^a-z0-9._\-]/gi, '_');
+    chrome.storage.sync.set({
+        packageName: _packageName
+    }, function () {
+        // if (callback) callback();
+        // chrome.storage.sync.get(['packageName'], function(data) {
+        //     console.log(data.packageName || 'AAA_Downloads');
+        //     console.log({data});
+        // });
     });
 }

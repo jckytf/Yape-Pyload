@@ -78,7 +78,7 @@ const downloadLink = function(info, tab) {
                         sendToast(tab, 'error', `Error checking url: ${json}`);
                         return;
                     }
-                    const safeName = encodeURIComponent(info.linkUrl.replace(/[^a-z0-9._\-]/gi, '_'));
+                    const safeName = encodeURIComponent(`${packageName}`.replace(/[^a-z0-9._\-]/gi, '_'));
                     fetch(`${origin}/api/addPackage?name="${safeName}"&links=["${encodeURIComponent(info.linkUrl)}"]`)
                         .then(response => response.json())
                         .then(json => {

@@ -125,7 +125,7 @@ function addPackage(name, url, callback) {
             }
         }
     }
-    const safeName = name.replace(/[^a-z0-9._\-]/gi, '_');
+    const safeName = (name.replace(/[^a-z0-9._\-]/gi, '_'));
     xhr.send(`name="${encodeURIComponent(safeName)}"&links=["${encodeURIComponent(url)}"]`);
 }
 

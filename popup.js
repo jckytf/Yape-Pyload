@@ -9,6 +9,8 @@ let optionsButton = document.getElementById('optionsButton');
 let limitSpeedButton = document.getElementById('limitSpeedButton');
 let externalLinkButton = document.getElementById('externalLinkButton');
 let totalSpeedDiv = document.getElementById('totalSpeed');
+let packageNameTxBox = document.getElementById('packageNameTxBox');
+let resetPackageNameButton = document.getElementById('resetPackageNameButton');
 
 let limitSpeedStatus = true;
 
@@ -89,7 +91,7 @@ downloadButton.onclick = function(event) {
     chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
         const url = tabs[0].url;
         const name = tabs[0].title;
-        addPackage(name, url, function(success, errorMessage) {
+        addPackage(packageName, url, function(success, errorMessage) {
             if (!success) {
                 setErrorMessage(`Error downloading package: ${errorMessage}`);
                 return;
@@ -100,6 +102,19 @@ downloadButton.onclick = function(event) {
         });
     });
 };
+
+packageNameTxBox.onblur = function(event) {
+    setPackageName(event.target.value);
+
+    // alert();
+    // console.log(`Package name set to event.target.value ${event.target.value}`);
+    // console.log(`packageNameTxBox.value ${packageNameTxBox.value}`);
+}
+
+resetPackageNameButton.onclick = function(event) {
+    setPackageName("AAA_Downloads");
+    packageNameTxBox.value = packageName;
+}
 
 optionsButton.onclick = function(event) {
     chrome.tabs.create({'url': '/options.html'});
@@ -114,6 +129,8 @@ limitSpeedButton.onclick = function(event) {
 }
 
 pullStoredData(function() {
+    packageNameTxBox.value = packageName;
+
     externalLinkButton.onclick = function(event) {
         chrome.tabs.create({'url': `${origin}/home`});
     }
